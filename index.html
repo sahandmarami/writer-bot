@@ -63,7 +63,7 @@
      <li><a href="#purchase" data-template-id="nav-purchase" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">خرید دستگاه</a></li>
      <li><a href="#about" data-template-id="nav-about" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">درباره ما</a></li>
     </ul><button id="mobile-menu-btn" class="md:hidden text-white"><i data-lucide="menu"></i></button>
-     <div id="mobile-menu" class="hidden absolute top-full right-0 left-0 bg-slate-900 p-6 md:hidden">
+     <div id="mobile-menu" class="hidden absolute top-full right-0 left-0 bg-slate-900 p-6">
     <ul class="flex flex-col gap-4 text-center">
         <li><a href="#hero">صفحه اصلی</a></li>
         <li><a href="#features">ویژگی‌ها</a></li>
@@ -262,11 +262,15 @@
     <p data-template-id="modal-desc" class="canva-text mb-6" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 18px;">برای هماهنگی و تکمیل سفارش لطفاً با شماره زیر تماس بگیرید:</p><a href="tel:09101240456" data-template-id="modal-phone" class="canva-text text-3xl font-bold text-blue-400 block mb-8" dir="ltr" style="color: rgb(96, 165, 250); font-weight: 700; font-style: normal; font-size: 32px;">09101240456</a> <button id="modal-close" data-template-id="modal-close-btn" class="canva-button px-8 py-3 rounded-xl font-bold transition hover:scale-105" style="background: rgb(71, 85, 105); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 18px;">بستن</button>
    </div>
   </div>
-   const mobileBtn = document.getElementById('mobile-menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-mobileBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
 });
   <script src="/_sdk/editing_sdk.js"></script>
   <script>
@@ -288,4 +292,14 @@ mobileBtn.addEventListener('click', () => {
     });
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a10c3099133d2608',t:'MTc4MjMwODkwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+   <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+});
+</script>
 </body></html>
