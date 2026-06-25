@@ -23,6 +23,31 @@
     .spin-slow { animation: spin-slow 20s linear infinite; }
     .float-anim { animation: float 4s ease-in-out infinite; }
     .gear-deco { position: absolute; opacity: 0.06; pointer-events: none; }
+    .particle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:rgba(96,165,250,0.5);
+    border-radius:50%;
+    animation:floatParticle linear infinite;
+}
+
+@keyframes floatParticle{
+    from{
+        transform:translateY(0);
+        opacity:0;
+    }
+    20%{
+        opacity:1;
+    }
+    80%{
+        opacity:1;
+    }
+    to{
+        transform:translateY(-100vh);
+        opacity:0;
+    }
+}
   </style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
@@ -42,6 +67,12 @@
   </header><!-- Hero -->
   <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"><img data-template-id="hero-bg-img" class="canva-image absolute inset-0 w-full h-full object-cover opacity-30" loading="lazy" src="https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1920" alt="High-tech abstract art featuring blue and teal circuit-like patterns">
    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-800/90"></div><!-- CNC Decorations Left -->
+    <div class="particle" style="left:10%; bottom:-20px; animation-duration:12s;"></div>
+<div class="particle" style="left:25%; bottom:-20px; animation-duration:15s;"></div>
+<div class="particle" style="left:40%; bottom:-20px; animation-duration:10s;"></div>
+<div class="particle" style="left:55%; bottom:-20px; animation-duration:18s;"></div>
+<div class="particle" style="left:70%; bottom:-20px; animation-duration:13s;"></div>
+<div class="particle" style="left:85%; bottom:-20px; animation-duration:16s;"></div>
    <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
     <div class="mb-8 fade-up"><img data-template-id="hero-device-img" class="canva-image mx-auto max-h-[600px] rounded-2xl glow img-hover float-anim" loading="lazy" src="canva://MAHNfNwaC5s/1" alt="دستگاه Mini CNC Plotter">
     </div>
