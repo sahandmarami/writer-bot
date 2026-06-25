@@ -55,7 +55,7 @@
  <body data-template-id="__page-root" class="min-h-screen text-white" style="background: rgb(30, 41, 59);"><!-- Header -->
   <header class="fixed top-0 left-0 right-0 z-50 glass">
    <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><img data-template-id="nav-logo" class="canva-image w-16 h-16 rounded-full" loading="lazy" src="canva://MAHNfAn5TGY/1" alt="لوگوی Mini CNC Plotter">
-    <ul class="hidden gap-8 text-base">
+  <ul class="hidden md:flex gap-8 text-base">
      <li><a href="#hero" data-template-id="nav-home" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">صفحه اصلی</a></li>
      <li><a href="#features" data-template-id="nav-features" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">ویژگی‌ها</a></li>
      <li><a href="#specs" data-template-id="nav-specs" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">مشخصات فنی</a></li>
@@ -63,6 +63,16 @@
      <li><a href="#purchase" data-template-id="nav-purchase" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">خرید دستگاه</a></li>
      <li><a href="#about" data-template-id="nav-about" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">درباره ما</a></li>
     </ul><button id="mobile-menu-btn" class="md:hidden text-white"><i data-lucide="menu"></i></button>
+     <div id="mobile-menu" class="hidden absolute top-full right-0 left-0 bg-slate-900 p-6 md:hidden">
+    <ul class="flex flex-col gap-4 text-center">
+        <li><a href="#hero">صفحه اصلی</a></li>
+        <li><a href="#features">ویژگی‌ها</a></li>
+        <li><a href="#specs">مشخصات فنی</a></li>
+        <li><a href="#portfolio">نمونه‌کارها</a></li>
+        <li><a href="#purchase">خرید دستگاه</a></li>
+        <li><a href="#about">درباره ما</a></li>
+    </ul>
+</div>
    </nav>
   </header><!-- Hero -->
   <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"><img data-template-id="hero-bg-img" class="canva-image absolute inset-0 w-full h-full object-cover opacity-30" loading="lazy" src="https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1920" alt="High-tech abstract art featuring blue and teal circuit-like patterns">
@@ -252,6 +262,12 @@
     <p data-template-id="modal-desc" class="canva-text mb-6" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 18px;">برای هماهنگی و تکمیل سفارش لطفاً با شماره زیر تماس بگیرید:</p><a href="tel:09101240456" data-template-id="modal-phone" class="canva-text text-3xl font-bold text-blue-400 block mb-8" dir="ltr" style="color: rgb(96, 165, 250); font-weight: 700; font-style: normal; font-size: 32px;">09101240456</a> <button id="modal-close" data-template-id="modal-close-btn" class="canva-button px-8 py-3 rounded-xl font-bold transition hover:scale-105" style="background: rgb(71, 85, 105); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 18px;">بستن</button>
    </div>
   </div>
+   const mobileBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+
+mobileBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+});
   <script src="/_sdk/editing_sdk.js"></script>
   <script>
     lucide.createIcons();
