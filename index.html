@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini CNC Plotter</title>
+  <link rel="icon" type="image/png" href="images/favicon.png.jpeg">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
+    .glass { background: rgba(255,255,255,0.08); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.15); }
+    .glass-footer { background: rgba(255,255,255,0.06); backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,0.12); }
+    .glass-card { background: rgba(255,255,255,0.07); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; }
+    .glow { box-shadow: 0 0 40px rgba(59,130,246,0.35); }
+    .img-hover { transition: transform 0.4s, box-shadow 0.4s; }
+    .img-hover:hover { transform: scale(1.06); box-shadow: 0 20px 60px rgba(59,130,246,0.35); }
+    .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    .spin-slow { animation: spin-slow 20s linear infinite; }
+    .float-anim { animation: float 4s ease-in-out infinite; }
+    .gear-deco { position: absolute; opacity: 0.06; pointer-events: none; }
+    .particle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:rgba(96,165,250,0.5);
+    border-radius:50%;
+    animation:floatParticle linear infinite;
+}
+
+@keyframes floatParticle{
+    from{
+        transform:translateY(0);
+        opacity:0;
+    }
+    20%{
+        opacity:1;
+    }
+    80%{
+        opacity:1;
+    }
+    to{
+        transform:translateY(-100vh);
+        opacity:0;
+    }
+}
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root" class="min-h-screen text-white" style="background: rgb(30, 41, 59);"><!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass">
+   <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><img data-template-id="nav-logo" class="canva-image w-16 h-16 rounded-full" loading="lazy" src="images/logo.png.jpeg" alt="لوگوی Mini CNC Plotter">
+  <ul class="hidden md:flex gap-8 text-base">
+     <li><a href="#hero" data-template-id="nav-home" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">صفحه اصلی</a></li>
+     <li><a href="#features" data-template-id="nav-features" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">ویژگی‌ها</a></li>
+     <li><a href="#specs" data-template-id="nav-specs" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">مشخصات فنی</a></li>
+     <li><a href="#portfolio" data-template-id="nav-portfolio" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">نمونه‌کارها</a></li>
+     <li><a href="#purchase" data-template-id="nav-purchase" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">خرید دستگاه</a></li>
+     <li><a href="#about" data-template-id="nav-about" class="canva-text hover:text-blue-400 transition" style="color: rgb(241, 245, 249); font-weight: 400; font-style: normal; font-size: 18px;">درباره ما</a></li>
+    </ul><button id="mobile-menu-btn" class="md:hidden text-white"><i data-lucide="menu"></i></button>
+     <div id="mobile-menu" class="hidden absolute top-full right-0 left-0 bg-slate-900 p-6">
+    <ul class="flex flex-col gap-4 text-center">
+        <li><a href="#hero">صفحه اصلی</a></li>
+        <li><a href="#features">ویژگی‌ها</a></li>
+        <li><a href="#specs">مشخصات فنی</a></li>
+        <li><a href="#portfolio">نمونه‌کارها</a></li>
+        <li><a href="#purchase">خرید دستگاه</a></li>
+        <li><a href="#about">درباره ما</a></li>
+    </ul>
+</div>
+   </nav>
+  </header><!-- Hero -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"><img data-template-id="hero-bg-img" class="canva-image absolute inset-0 w-full h-full object-cover opacity-30" loading="lazy" src="https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1920" alt="High-tech abstract art featuring blue and teal circuit-like patterns">
+   <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-800/90"></div><!-- CNC Decorations Left -->
+    <div class="particle" style="left:10%; bottom:-20px; animation-duration:12s;"></div>
+<div class="particle" style="left:25%; bottom:-20px; animation-duration:15s;"></div>
+<div class="particle" style="left:40%; bottom:-20px; animation-duration:10s;"></div>
+<div class="particle" style="left:55%; bottom:-20px; animation-duration:18s;"></div>
+<div class="particle" style="left:70%; bottom:-20px; animation-duration:13s;"></div>
+<div class="particle" style="left:85%; bottom:-20px; animation-duration:16s;"></div>
+   <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+    <div class="mb-8 fade-up"><img data-template-id="hero-device-img" class="canva-image mx-auto max-h-[600px] rounded-2xl glow img-hover float-anim" loading="lazy" src="images/device.jpg.jpg" alt="دستگاه Mini CNC Plotter">
+    </div>
+    <h1 data-template-id="hero-title" class="canva-text font-bold mb-4 fade-up text-6xl md:text-7xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 56px;">Mini CNC Plotter</h1>
+    <p data-template-id="hero-subtitle" class="canva-text text-2xl md:text-3xl mb-10 fade-up leading-relaxed" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 22px;">دستگاه CNC رومیزی کوچک و دقیق برای طراحی، نقاشی و نوشتن با خودکار</p>
+    <div class="flex flex-wrap justify-center gap-4 fade-up"><a href="#portfolio" data-template-id="hero-cta-portfolio" class="canva-button px-10 py-4 rounded-xl text-xl font-bold transition hover:scale-105" style="background: rgb(37, 99, 235); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 20px;">مشاهده نمونه‌کارها</a> <a href="#purchase" data-template-id="hero-cta-order" class="canva-button px-10 py-4 rounded-xl text-xl font-bold border-2 border-blue-400 transition hover:scale-105" style="background: transparent; color: rgb(96, 165, 250); font-weight: 700; font-style: normal; font-size: 20px;">ثبت سفارش</a>
+    </div>
+    <div class="flex flex-wrap justify-center gap-4 mt-4 fade-up">
+     <a href="https://abrehamrahi.ir/o/public/IG1THzqV/" target="_blank" rel="noopener noreferrer" data-template-id="hero-cta-guide-download" class="canva-button flex items-center gap-2 px-8 py-3 rounded-xl text-lg font-bold transition hover:scale-105" style="background: rgb(30, 41, 59); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px; border: 1px solid rgba(255,255,255,0.2);">
+      <i data-lucide="download" class="w-5 h-5"></i>
+      دانلود برنامه راهنمای استفاده از دستگاه
+     </a>
+     <a href="https://abrehamrahi.ir/o/public/bQj2TjYi/" target="_blank" rel="noopener noreferrer" data-template-id="hero-cta-intro-download" class="canva-button flex items-center gap-2 px-8 py-3 rounded-xl text-lg font-bold transition hover:scale-105" style="background: rgb(30, 41, 59); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px; border: 1px solid rgba(255,255,255,0.2);">
+      <i data-lucide="download" class="w-5 h-5"></i>
+      دانلود برنامه معرفی دستگاه
+     </a>
+     <a href="https://abrehamrahi.ir/o/public/5ym7toh0/" target="_blank" rel="noopener noreferrer" data-template-id="hero-cta-catalog-download" class="canva-button flex items-center gap-2 px-8 py-3 rounded-xl text-lg font-bold transition hover:scale-105" style="background: rgb(30, 41, 59); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px; border: 1px solid rgba(255,255,255,0.2);">
+      <i data-lucide="download" class="w-5 h-5"></i>
+      دانلود کاتالوگ دستگاه
+     </a>
+    </div>
+   </div>
+  </section><!-- Features -->
+  <section id="features" class="py-24 px-6 bg-gradient-to-b from-slate-800 to-slate-700">
+   <div class="max-w-6xl mx-auto">
+    <h2 data-template-id="features-title" class="canva-text font-bold text-center mb-16 fade-up" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 36px;">ویژگی‌های دستگاه</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+     <div class="glass-card p-8 fade-up">
+      <div class="text-blue-400 mb-3">
+       <i data-lucide="wifi" class="w-10 h-10"></i>
+      </div>
+      <h3 data-template-id="feat-1-title" class="canva-text font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">کنترل از طریق Wi-Fi</h3>
+      <p data-template-id="feat-1-desc" class="canva-text" style="color: rgb(203, 213, 225); font-weight: 400; font-style: normal; font-size: 17px;">بدون نیاز به اتصال سیمی، دستگاه را از طریق شبکه بی‌سیم کنترل کنید</p>
+     </div>
+     <div class="glass-card p-8 fade-up">
+      <div class="text-blue-400 mb-3">
+       <i data-lucide="maximize" class="w-10 h-10"></i>
+      </div>
+      <h3 data-template-id="feat-2-title" class="canva-text font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">ابعاد میز کار ۴×۴ سانتی‌متر</h3>
+      <p data-template-id="feat-2-desc" class="canva-text" style="color: rgb(203, 213, 225); font-weight: 400; font-style: normal; font-size: 17px;">فضای کاری مناسب برای طراحی‌های کوچک و دقیق</p>
+     </div>
+     <div class="glass-card p-8 fade-up">
+      <div class="text-blue-400 mb-3">
+       <i data-lucide="cog" class="w-10 h-10"></i>
+      </div>
+      <h3 data-template-id="feat-3-title" class="canva-text font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">دو موتور پله‌ای X و Y</h3>
+      <p data-template-id="feat-3-desc" class="canva-text" style="color: rgb(203, 213, 225); font-weight: 400; font-style: normal; font-size: 17px;">حرکت دقیق در دو محور با استفاده از استپر موتور</p>
+     </div>
+     <div class="glass-card p-8 fade-up">
+      <div class="text-blue-400 mb-3">
+       <i data-lucide="move" class="w-10 h-10"></i>
+      </div>
+      <h3 data-template-id="feat-4-title" class="canva-text font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">سروو موتور SG90 محور Z</h3>
+      <p data-template-id="feat-4-desc" class="canva-text" style="color: rgb(203, 213, 225); font-weight: 400; font-style: normal; font-size: 17px;">کنترل بالا و پایین بردن قلم با دقت بالا</p>
+     </div>
+     <div class="glass-card p-8 fade-up">
+      <div class="text-blue-400 mb-3">
+       <i data-lucide="cpu" class="w-10 h-10"></i>
+      </div>
+      <h3 data-template-id="feat-5-title" class="canva-text font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Arduino Uno WiFi R3</h3>
+      <p data-template-id="feat-5-desc" class="canva-text" style="color: rgb(203, 213, 225); font-weight: 400; font-style: normal; font-size: 17px;">کنترلر قدرتمند با قابلیت اتصال بی‌سیم</p>
+     </div>
+     <div class="glass-card p-8 fade-up">
+      <div class="text-blue-400 mb-3">
+       <i data-lucide="pen-tool" class="w-10 h-10"></i>
+      </div>
+      <h3 data-template-id="feat-6-title" class="canva-text font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">دقت مناسب رسم</h3>
+      <p data-template-id="feat-6-desc" class="canva-text" style="color: rgb(203, 213, 225); font-weight: 400; font-style: normal; font-size: 17px;">رسم متن، اشکال هندسی و طرح‌های خلاقانه</p>
+     </div>
+     <div class="glass-card p-8 fade-up md:col-span-2 lg:col-span-1">
+      <div class="text-blue-400 mb-3">
+       <i data-lucide="globe" class="w-10 h-10"></i>
+      </div>
+      <h3 data-template-id="feat-7-title" class="canva-text font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">نرم‌افزار Web Server</h3>
+      <p data-template-id="feat-7-desc" class="canva-text" style="color: rgb(203, 213, 225); font-weight: 400; font-style: normal; font-size: 17px;">کنترل دستگاه از طریق مرورگر وب بدون نیاز به نصب نرم‌افزار</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Portfolio -->
+  <section id="portfolio" class="py-24 px-6 bg-slate-700">
+   <div class="max-w-6xl mx-auto">
+    <h2 data-template-id="portfolio-title" class="canva-text font-bold text-center mb-16 fade-up" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 36px;">نمونه‌کارها</h2>
+    <div class="space-y-8">
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="fade-up">
+       <img data-template-id="sample-1" class="canva-image w-full h-72 object-cover rounded-2xl img-hover" loading="lazy" src="images/sample1.jpg.jpg" alt="نقشه ایران رسم شده توسط دستگاه">
+      </div>
+      <div class="fade-up">
+       <img data-template-id="sample-2" class="canva-image w-full h-72 object-cover rounded-2xl img-hover" loading="lazy" src="images/sample2.jpg.jpg" alt="خودروی کلاسیک رسم شده توسط دستگاه">
+      </div>
+      <div class="fade-up">
+       <img data-template-id="sample-3" class="canva-image w-full h-72 object-cover rounded-2xl img-hover" loading="lazy" src="images/sample3.jpg.jpg" alt="قطعه مکانیکی رسم شده توسط دستگاه">
+      </div>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="fade-up">
+       <img data-template-id="sample-4" class="canva-image w-full h-72 object-cover rounded-2xl img-hover" loading="lazy" src="images/sample4.jpg.jpg" alt="طرح ابر قارچی رسم شده توسط دستگاه">
+      </div>
+      <div class="fade-up">
+       <img data-template-id="sample-5" class="canva-image w-full h-72 object-cover rounded-2xl img-hover" loading="lazy" src="images/sample5.jpg.jpg" alt="متن جشنواره خوارزمی نوشته شده توسط دستگاه">
+      </div>
+      <div class="fade-up">
+       <img data-template-id="sample-6" class="canva-image w-full h-72 object-cover rounded-2xl img-hover" loading="lazy" src="images/sample6.jpg.jpg" alt="نوشته‌های فارسی رسم شده توسط دستگاه">
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Poster Banner -->
+  <section id="poster" class="py-20 px-6 bg-gradient-to-b from-slate-700 to-slate-800">
+   <div class="max-w-5xl mx-auto">
+    <div class="fade-up">
+     <img data-template-id="poster-img" class="canva-image w-full h-auto rounded-2xl glow shadow-2xl" loading="lazy" src="images/poster.jpg.jpeg" alt="پوستر Mini CNC Plotter">
+    </div>
+   </div>
+  </section><!-- Specs -->
+  <section id="specs" class="py-24 px-6 bg-gradient-to-b from-slate-700 to-slate-800">
+   <div class="max-w-5xl mx-auto">
+    <h2 data-template-id="specs-title" class="canva-text font-bold text-center mb-16 fade-up" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 36px;">مشخصات فنی</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+     <div class="glass-card p-6 text-center fade-up">
+      <p data-template-id="spec-1-label" class="canva-text text-sm mb-1" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">نوع دستگاه</p>
+      <p data-template-id="spec-1-value" class="canva-text font-bold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Mini CNC Plotter</p>
+     </div>
+     <div class="glass-card p-6 text-center fade-up">
+      <p data-template-id="spec-2-label" class="canva-text text-sm mb-1" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">کنترلر</p>
+      <p data-template-id="spec-2-value" class="canva-text font-bold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Arduino Uno WiFi R3</p>
+     </div>
+     <div class="glass-card p-6 text-center fade-up">
+      <p data-template-id="spec-3-label" class="canva-text text-sm mb-1" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">محور X و Y</p>
+      <p data-template-id="spec-3-value" class="canva-text font-bold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Stepper Motor</p>
+     </div>
+     <div class="glass-card p-6 text-center fade-up">
+      <p data-template-id="spec-4-label" class="canva-text text-sm mb-1" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">محور Z</p>
+      <p data-template-id="spec-4-value" class="canva-text font-bold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Servo SG90</p>
+     </div>
+     <div class="glass-card p-6 text-center fade-up">
+      <p data-template-id="spec-5-label" class="canva-text text-sm mb-1" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">ارتباط</p>
+      <p data-template-id="spec-5-value" class="canva-text font-bold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Wi-Fi</p>
+     </div>
+     <div class="glass-card p-6 text-center fade-up">
+      <p data-template-id="spec-6-label" class="canva-text text-sm mb-1" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">نرم‌افزار کنترل</p>
+      <p data-template-id="spec-6-value" class="canva-text font-bold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Web Server</p>
+     </div>
+     <div class="glass-card p-6 text-center fade-up sm:col-span-2 lg:col-span-3">
+      <p data-template-id="spec-7-label" class="canva-text text-sm mb-1" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">ابعاد میز کار</p>
+      <p data-template-id="spec-7-value" class="canva-text font-bold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">۴×۴ سانتی‌متر</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Purchase -->
+  <section id="purchase" class="py-24 px-6 bg-slate-800">
+   <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <div class="fade-up">
+     <img data-template-id="purchase-img" class="canva-image w-full rounded-2xl glow" loading="lazy" src="images/device.jpg.jpg" alt="دستگاه Mini CNC Plotter">
+    </div>
+    <div class="fade-up">
+     <h2 data-template-id="purchase-title" class="canva-text font-bold mb-4" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 32px;">سفارش Mini CNC Plotter</h2>
+     <p data-template-id="purchase-price" class="canva-text text-5xl font-bold mb-6" style="color: rgb(96, 165, 250); font-weight: 700; font-style: normal; font-size: 40px;">۱۴,۵۰۰,۰۰۰ تومان</p>
+     <p data-template-id="purchase-desc" class="canva-text leading-relaxed mb-8" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 19px;">این دستگاه به صورت سفارشی تولید می‌شود و برای علاقه‌مندان به الکترونیک، رباتیک، CNC و پروژه‌های آموزشی گزینه‌ای مناسب است.</p><button id="order-btn" data-template-id="purchase-cta" class="canva-button px-10 py-4 rounded-xl text-xl font-bold transition hover:scale-105" style="background: rgb(37, 99, 235); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">ثبت سفارش</button>
+    </div>
+   </div>
+  </section><!-- About -->
+  <section id="about" class="py-24 px-6 bg-gradient-to-b from-slate-800 to-slate-700">
+   <div class="max-w-4xl mx-auto text-center"><img data-template-id="about-logo" class="canva-image w-32 h-32 rounded-full mx-auto mb-8 glow" loading="lazy" src="images/logo.png.jpeg" alt="لوگوی Mini CNC Plotter">
+    <h2 data-template-id="about-title" class="canva-text font-bold mb-4 fade-up" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 32px;">درباره ما</h2>
+    <p data-template-id="about-text" class="canva-text leading-relaxed mb-10 fade-up" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 19px;">ما در تلاش هستیم تا فناوری CNC را با هزینه‌ای بسیار کمتر در دسترس علاقه‌مندان قرار دهیم. Mini CNC Plotter یک نمونه اولیه نوآورانه است که با استفاده از قطعات مقرون‌به‌صرفه طراحی شده و توانسته هزینه ساخت را نسبت به بسیاری از نمونه‌های موجود در بازار به شکل قابل توجهی کاهش دهد.</p>
+    <div class="glass-card p-8 inline-block fade-up">
+     <p data-template-id="about-name" class="canva-text font-bold text-2xl mb-4" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 24px;">سهند مرامی</p>
+     <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+      <div class="flex items-center gap-2">
+       <i data-lucide="phone" class="w-5 h-5 text-blue-400"></i><span data-template-id="about-phone" class="canva-text" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 18px;">09101240456</span>
+      </div>
+      <div class="flex items-center gap-2">
+       <i data-lucide="mail" class="w-5 h-5 text-blue-400"></i><span data-template-id="about-email" class="canva-text" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 18px;">sahandmarami@gmail.com</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="glass-footer py-8 px-6">
+   <div class="max-w-6xl mx-auto text-center">
+    <p data-template-id="footer-text" class="canva-text" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">ساخته شده توسط سهند مرامی</p>
+   </div>
+  </footer><!-- Order Modal -->
+  <div id="order-modal" class="modal-overlay" role="dialog" aria-modal="true">
+   <div class="glass-card p-10 max-w-md w-full mx-4 text-center">
+    <div class="text-green-400 mb-4">
+     <i data-lucide="check-circle" class="w-16 h-16 mx-auto"></i>
+    </div>
+    <h3 data-template-id="modal-title" class="canva-text font-bold text-2xl mb-4" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 28px;">سفارش شما ثبت شد!</h3>
+    <p data-template-id="modal-desc" class="canva-text mb-6" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 18px;">برای هماهنگی و تکمیل سفارش لطفاً با شماره زیر تماس بگیرید:</p><a href="tel:09101240456" data-template-id="modal-phone" class="canva-text text-3xl font-bold text-blue-400 block mb-8" dir="ltr" style="color: rgb(96, 165, 250); font-weight: 700; font-style: normal; font-size: 32px;">09101240456</a> <button id="modal-close" data-template-id="modal-close-btn" class="canva-button px-8 py-3 rounded-xl font-bold transition hover:scale-105" style="background: rgb(71, 85, 105); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 18px;">بستن</button>
+   </div>
+  </div>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+    lucide.createIcons();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    document.getElementById('order-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('order-modal').classList.add('active');
+    });
+    document.getElementById('modal-close').addEventListener('click', () => {
+      document.getElementById('order-modal').classList.remove('active');
+    });
+    document.getElementById('order-modal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('active');
+    });
+  </script>
+   <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+});
+</script>
+</body>
+</html>
